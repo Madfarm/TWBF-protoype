@@ -1,6 +1,7 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
+import { useOptionalUser } from "~/lib/utils";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,6 +11,8 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const user = useOptionalUser();
+
   return (
     <main>
       <section className="absolute opacity-20 top-0 pointer-events-none">
@@ -21,12 +24,24 @@ export default function Index() {
         <p>Innovative neuroscience research facilitating AI and Microsoft please. No disjoints <br /> No cortisol. No rent. Fund your AI cash flow brain chart tables for learning AI please</p>
 
         <div className="mt-10">
-          <Link to="/login">
-            <Button variant={"ghost"}>Sign In</Button>
-          </Link>
-          <Link to="/register">
-            <Button className="bg-foreground rounded-full">Get Started</Button>
-          </Link>
+          {!user ?
+          <>
+            <Link to="/login">
+              <Button variant={"ghost"}>Sign In</Button>
+            </Link>
+            <Link to="/register">
+              <Button className="bg-foreground rounded-full">Get Started</Button>
+            </Link>
+
+          </>
+          :
+          <>
+            <Link to="/logout">
+              <Button className="bg-foreground rounded-full">Logout</Button>
+            </Link>
+          </>
+
+          }
         </div>
       </section>
 

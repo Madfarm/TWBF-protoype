@@ -55,6 +55,9 @@ module.exports = {
 					DEFAULT: lightDarkVar("card"),
 					foreground: lightDarkVar("card-foreground"),
 				},
+				auth: {
+					DEFAULT: lightDarkVar("auth")
+				}
 			},
 			borderRadius: {
 				lg: "var(--radius)",

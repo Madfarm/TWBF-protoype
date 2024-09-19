@@ -1,3 +1,6 @@
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import authenticator from "./lib/auth.server";
+
 
 import {
 	Links,
@@ -18,6 +21,13 @@ import {
 
 import "./globals.css";
 
+
+export const loader = async ({
+	request,
+}: LoaderFunctionArgs) => {
+	return json({ user: await authenticator.isAuthenticated(request) });
+	  
+}
 
 
 function App({ children }: { children: React.ReactNode }) {

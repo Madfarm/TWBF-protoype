@@ -16,6 +16,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useOptionalUser } from "~/lib/utils";
 
 
 export function Header() {
@@ -26,6 +27,7 @@ export function Header() {
         rerender({});
     }, []);
     const theme = getTheme();
+    const user = useOptionalUser();
 
 
 
@@ -39,10 +41,21 @@ export function Header() {
             </div>
 
             <div className="flex flex-row items-center gap-4">
-                <Link to="login">Sign In</Link>
-                <Link to="/register">
-                    <Button className="bg-foreground rounded-full">Get Started</Button>
-                </Link>
+                {!user ?
+                    (<>
+                        <Link to="login">Sign In</Link>
+                        <Link to="/register">
+                            <Button className="bg-foreground rounded-full">Get Started</Button>
+                        </Link>
+                    </>)
+                        :
+                    (<>
+                        <Link to="Learn">My Learning</Link>
+                        <Link to="/Guidance">
+                            <Button className="bg-foreground rounded-full">Guidance</Button>
+                        </Link>
+                    </>)
+                }
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
