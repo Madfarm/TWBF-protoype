@@ -1,45 +1,76 @@
+
 import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
+	Links,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	isRouteErrorResponse,
+	useRouteError,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 
-import "./tailwind.css";
+import { Header } from "~/components/Header";
+import {
+	ThemeSwitcherSafeHTML,
+	ThemeSwitcherScript,
+} from "./components/theme-switcher";
 
-export const links: LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
+import "./globals.css";
 
-export function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
-  );
+
+
+function App({ children }: { children: React.ReactNode }) {
+	
+
+	return (
+		<ThemeSwitcherSafeHTML lang="en">
+			<head>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<Meta />
+				<Links />
+				<ThemeSwitcherScript />
+			</head>
+			<body className="overflow-hidden">
+				<Header />
+				{children}
+				<ScrollRestoration />
+				<Scripts />
+			</body>
+		</ThemeSwitcherSafeHTML>
+	);
 }
 
-export default function App() {
-  return <Outlet />;
+export default function Root() {
+	return (
+		<App>
+			<Outlet />
+		</App>
+	);
+}
+
+export function ErrorBoundary() {
+	const error = useRouteError();
+	let status = 500;
+	let message = "An unexpected error occurred.";
+	if (isRouteErrorResponse(error)) {
+		status = error.status;
+		switch (error.status) {
+			case 404:
+				message = "Page Not Found";
+				break;
+		}
+	} else {
+		console.error(error);
+	}
+
+	return (
+		<App>
+			<div className="container prose py-8">
+				<h1>{status}</h1>
+				<p>{message}</p>
+			</div>
+		</App>
+	);
 }
