@@ -19,4 +19,21 @@ model User {
   updatedAt DateTime @updatedAt
   email     String   @unique
   password  String
+  lessons Lesson[] @relation("UserLessons")
+}
+
+model Lesson {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  content   String
+  userId    String   @db.ObjectId
+  topicId   String   @db.ObjectId
+  user      User     @relation("UserLessons", fields: [userId], references: [id])
+  topic     Topic    @relation(fields: [topicId], references: [id])
+}
+
+model Topic {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  lessons   Lesson[] @relation
 }
