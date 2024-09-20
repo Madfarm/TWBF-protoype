@@ -1,7 +1,6 @@
 import { Input } from "~/components/ui/input"
 import { Button } from "~/components/ui/button"
 import authenticator from "~/lib/auth.server"
-import { AuthorizationError } from "remix-auth"
 
 import { json, } from "@remix-run/node"
 
@@ -11,20 +10,35 @@ import {
     Link,
     useActionData
 } from "@remix-run/react"
+import { validateAuthForm } from "~/lib/utils"
 
 
 export const action = async ({
     request
 }: ActionFunctionArgs) => {
-    return await authenticator.authenticate("form", request, {
+    let clonedReq = request.clone();
+
+    const form = await clonedReq.formData();
+    const email = form.get("email") as string;
+    const password = form.get("password") as string;
+
+    let errorMessages = validateAuthForm(email, password);
+
+    if (errorMessages.emailError || errorMessages.passError) {
+        return json({ errorMessages })
+    }
+
+    await authenticator.authenticate("form", request, {
         successRedirect: "/",
-        failureRedirect: "/"
     })
+    
 
 }
 
 
 export default function Login() {
+    const data = useActionData<typeof action>();
+
     return (
         <main className="flex items-center justify-center my-16 h-full">
             <section className="absolute opacity-30 top-0 pointer-events-none brightness-[.40]">
@@ -41,17 +55,23 @@ export default function Login() {
                     aria-label="Email"
                     name="email"
                 />
+                <div className="h-1 text-destructive">
+                    {data?.errorMessages.emailError || ""}
+                </div>
                 <Input
                     type="password"
                     placeholder="Password"
                     aria-label="Password"
                     name="password"
                 />
+                <div className="h-1 text-destructive">
+                    {data?.errorMessages.passError || ""}
+                </div>
                 <Button type="submit">Submit</Button>
 
-                <div className="flex flex-row gap-2 pt-16">
+                <div className="flex flex-row gap-2 lg:pt-4 sm:pt-1">
                     <p>Need an account?</p>
-                    <Link to="/login"><strong>Sign Up</strong></Link>
+                    <Link to="/login" className="hover:opacity-70"><strong>Sign Up</strong></Link>
                 </div>
             </Form>
 

@@ -42,3 +42,25 @@ export function useUser(): AuthUser {
   }
   return maybeUser;
 }
+
+export type AuthErrorType = {
+  emailError: string | null,
+  passError: string | null,
+}
+
+export function validateAuthForm(email: string, password: string): AuthErrorType {
+  let errorMessages: AuthErrorType = {
+    emailError: null,
+    passError: null
+  }
+
+  if (!email || email?.length === 0) {
+    errorMessages = { ...errorMessages, emailError: "Email is required" }
+  }
+
+  if (!password || password?.length === 0) {
+    errorMessages = { ...errorMessages, passError: "Password is required" }
+  }
+
+  return errorMessages;
+}
