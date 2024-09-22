@@ -29,7 +29,7 @@ export const action = async ({
     }
 
     await authenticator.authenticate("form", request, {
-        successRedirect: "/",
+        successRedirect: "/choose",
     })
     
 
