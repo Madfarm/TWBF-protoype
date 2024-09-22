@@ -1,5 +1,5 @@
 import { LaptopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { Link } from "@remix-run/react";
+import { Link, useLocation } from "@remix-run/react";
 import * as React from "react";
 import { useHydrated } from "remix-utils/use-hydrated";
 
@@ -28,6 +28,7 @@ export function Header() {
     }, []);
     const theme = getTheme();
     const user = useOptionalUser();
+    const location = useLocation();
 
 
 
@@ -41,21 +42,26 @@ export function Header() {
             </div>
 
             <div className="flex flex-row items-center gap-4">
-                {!user ?
-                    (<>
-                        <Link to="login">Sign In</Link>
-                        <Link to="/register">
-                            <Button className="bg-foreground rounded-full">Get Started</Button>
-                        </Link>
-                    </>)
+                {location.pathname != "/choose" ?
+                    !user ?
+                        (<>
+                            <Link to="login">Sign In</Link>
+                            <Link to="/register">
+                                <Button className="bg-foreground rounded-full">Get Started</Button>
+                            </Link>
+                        </>)
                         :
-                    (<>
-                        <Link to="Learn">My Learning</Link>
-                        <Link to="/Guidance">
-                            <Button className="bg-foreground rounded-full">Guidance</Button>
+                        (<>
+                            <Link to="/learn">My Learning</Link>
+                            <Link to="/guidance">
+                                <Button className="bg-foreground rounded-full">Guidance</Button>
+                            </Link>
+                        </>)
+                    : (
+                        <Link to="/logout">
+                            <Button className="bg-foreground rounded-full">Sign Out</Button>
                         </Link>
-                    </>)
-                }
+                    )}
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
