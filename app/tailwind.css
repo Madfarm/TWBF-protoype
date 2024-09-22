@@ -60,6 +60,26 @@
   .authLogin {
     background-color: black;
   }
+
+  .choose-container {
+    @apply h-full w-full flex items-center justify-center overflow-hidden;
+  }
+
+  .choose-image {
+    @apply h-full bg-cover absolute transition-all duration-500 ease-in-out transform bg-center; 
+  }
+
+  .choose-text {
+    @apply absolute text-5xl font-black transition-all duration-500 ease-in-out transform scale-150 text-gray-50 opacity-60;
+  }
+
+  .choose-container:hover .choose-image {
+    @apply scale-150;
+  }
+  .choose-container:hover .choose-text {
+    @apply scale-100;
+  }
+
 }
 
 @layer base {
