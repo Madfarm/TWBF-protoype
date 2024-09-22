@@ -52,8 +52,8 @@ export function Header() {
                         </>)
                         :
                         (<>
-                            <Link to="Learn">My Learning</Link>
-                            <Link to="/Guidance">
+                            <Link to="/learn">My Learning</Link>
+                            <Link to="/guidance">
                                 <Button className="bg-foreground rounded-full">Guidance</Button>
                             </Link>
                         </>)

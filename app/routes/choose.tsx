@@ -18,7 +18,7 @@ export default function ChoosePage() {
                 <h1 className="choose-text">LEARN</h1>
             </Link>
             
-            <Link className="choose-container" to="/learn">
+            <Link className="choose-container" to="/guidance">
                 <div className="bg-[url('/guidance-background.jpg')] choose-image" />
                 <h1 className="choose-text">AI Assistant</h1>
             </Link>
